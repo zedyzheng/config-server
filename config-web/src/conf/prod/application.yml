@@ -1,0 +1,72 @@
+spring:
+  profiles:
+    active: prod
+  application:
+    name: ms-platform-config
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://10.47.88.203:1433;DatabaseName=PlatformSupportDB;integratedSecurity=false
+    username: platformdbuser
+    password: PLAT889$ASDJIS
+    maxActive: 20
+    initialSize: 2
+    maxWait: 60000
+    minIdle: 2
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    type: com.alibaba.druid.pool.DruidDataSource
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    filters: stat,wall,logback
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+  jpa:
+    #database-platform: org.hibernate.dialect.SQLServer2012Dialect
+    database-platform: com.ms.platform.server.config.web.db.SqlServer2012Dialect
+    database: sql_server
+    open-in-view: true
+    show-sql: true
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+      dialect: com.ms.platform.server.config.web.db.SqlServer2012Dialect
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+  zipkin:
+      base-url: http://10.252.227.22:9411
+      enabled: true
+  sleuth:
+      sampler:
+        percentage: 1.0
+  data:
+    jpa:
+      repositories:
+        enabled: true
+
+sample:
+  zipkin:
+    enabled: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://10.117.41.249:8761/eureka,http://10.122.72.195:8761/eureka/
+  instance:
+      prefer-ip-address: true
+
+logging:
+  file: /data/logs/config-console/server.log
+  level:
+    root: INFO
+    org.springframework.security: INFO
+
+security:
+  jwt:
+    secret: c18e5617bdc02f36429ec81b92e0e27b6fa40d80
+    expirationInSeconds: 86400
+
